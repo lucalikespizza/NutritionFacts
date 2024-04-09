@@ -36,25 +36,25 @@
           <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">Added by</th>
                 <th scope="col">Name</th>
                 <th scope="col">Calories</th>
                 <th scope="col">Carbs</th>
                 <th scope="col">Fats</th>
                 <th scope="col">Protein</th>
-                <th scope="col">Added by User</th>
                 <!--<th scope="col">More Info</th>-->
               </tr>
             </thead>
             <tbody>
               {% for item in items%}
               <tr>
-                  <th scope="row">{{item.id}}</th>
+                  <td>{{item.id}}</td>
+                  <td>{{item.addedby}}</td>
                   <td>{{item.name}}</td>
-                  <td>{{item.calories}}</td>
+                  <td>{{item.cals}}</td>
                   <td>{{item.carbs}} g</td>
                   <td>{{item.fats}} g</td>
                   <td>{{item.protein}} g</td>
-                  <td>{{item.addedby}}</td>
                   <!--<td><a href="https://en.wikipedia.org/wiki/{{item.name}}"><button type="button" class="btn btn-info">More Info</button></td></a>-->
               </tr>
               {% endfor %}
