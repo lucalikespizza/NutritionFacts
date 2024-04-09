@@ -1,0 +1,14 @@
+Funktioniert:
+
+Add food
+Invoke-WebRequest -Uri http://127.0.0.1:5000/addfood -Method POST -ContentType 'application/json' -Body '{"id":8888, "name":"Lecker Bierchen", "calories":0, "carbs":0, "fats":0, "protein":9999}'
+
+
+Add User
+Invoke-WebRequest -Uri http://127.0.0.1:5000/users/add -Method POST -ContentType 'application/json' -Body '{"name":"Luca", "pw":"hallo"}'
+
+
+PWs
+-9082734942383234910 = hallo
+-9082734942383234910 = hallo
+-6656656085600242282 = hallo.
