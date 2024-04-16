@@ -6,7 +6,7 @@ def DB_select_all_users():
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="52880",
+    port="62885",
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
@@ -27,7 +27,7 @@ def DB_select_all_foods():
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="52880",
+    port="62885",
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
@@ -48,7 +48,7 @@ def DB_add_new_user(new):
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="52880",
+    port="62885",
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
@@ -67,7 +67,7 @@ def DB_add_new_food(new):
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="52880",
+    port="62885",
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
@@ -88,14 +88,18 @@ foodsDB = DB_select_all_foods()
 
 # Webpages
 @app.route("/")
+def page_index():
+    return render_template(template_name_or_list="index.html")
+
+@app.route("/home")
 def page_home():
     username = "Luca"
     items = DB_select_all_foods()
     print(f"[DEBUG] foodsDB = {foodsDB}")
     return render_template(template_name_or_list="home.html", items=items, username=username)
 
-@app.route("/login")
-def page_login():
+@app.route('/login')
+def login_pages():
     return render_template(template_name_or_list="login.html")
 
 @app.route("/register")
@@ -107,15 +111,20 @@ def page_addfood():
     return render_template(template_name_or_list="addfood.html")
 
 # Endpoints
-@app.route("/users/get", methods=["GET"])
-def get_users():
-    return DB_select_all_users()
+@app.route("/users/login", methods=["POST"])
+def login_users():
+    new = request.get_json()
+    for x in DB_select_all_users():
+        print(x)
+        if new["name"] == x["name"] and new["password"] == x["password"]:
+            print("Nutzername und Passwort korrekt, login genehmigt!")
+            return 'OK', 201
+    return 'Unauthorized', 401
 
 @app.route("/users/add", methods=["POST"])
 def add_user():
-    new = dict(request.get_json())
-    new["password"] = str(hash(new["password"]))
-    print(f"[DEBUG] /users/add new = {new}")
+    new = request.get_json()
+    print(f"[DEBUG] /users/add: Added {new}")
     DB_add_new_user(new)
     return 'OK', 204
 

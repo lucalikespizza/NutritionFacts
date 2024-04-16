@@ -52,18 +52,41 @@
         <button type="button" onclick="submit()" class="btn btn-primary">Register</button>
     </div>
     <script>
-      function submit() {
-        alert("Submit wurde ausgeführt!");
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-          if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("demo").innerHTML = this.responseText;
-          }
-        };
-        xhttp.open("POST", "/users/add", true);
-        xhttp.setRequestHeader("Content-Type", "application/json");
-        xhttp.send();
-      }
+        function submit() {
+            //Daten holen
+            const email = document.getElementById("registerEmail").value;
+            const name = document.getElementById("registerUsername").value;
+            const pw = document.getElementById("registerPassword").value;
+
+            const url = '/users/add';
+            const data = { "name" : name , "email_address" : email, "password" : pw };
+
+            // Konfiguriere die Anfrage
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            };
+
+            // Sende die Anfrage
+            if (name != "" && pw != "" && email != "") {
+                fetch(url, requestOptions)
+                    .then(response => {
+                      console.log('Statuscode:', response.status);
+                      if (response.status == 204) {
+                        alert("Successfully registered!")
+                        window.location.assign("/login")
+                      }
+                    })
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error:', error));
+            }
+            else {
+                alert("No field can be empty!")
+            }
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>

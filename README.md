@@ -85,7 +85,8 @@ mydb.close()
 
 ## Roadmap
 
-- [ ] User anlegen per form
-- [ ] Login per form
-- [ ] Logged in status beibehalten
+- [x] User anlegen per form
+- [x] Login per form
+- [x] Logged in status beibehalten
+- [ ] Einzelne Seiten erkennen logged_in == true / false und reagieren
 - [ ] Food anlegen per form
