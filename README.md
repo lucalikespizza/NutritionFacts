@@ -81,7 +81,9 @@ cursor.close()
 mydb.close()
 ```
 
-## Bekannte Bugs
+## To-Do
+
+- [ ] Passwort hashen auf Client-Seite
 
 ## Roadmap
 
