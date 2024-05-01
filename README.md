@@ -81,14 +81,38 @@ cursor.close()
 mydb.close()
 ```
 
+### Sessions
+```
+from flask import session
+app.secret_key = "d8Zu^8^g@CNmZ4WkeMAd"
+
+# Add key
+session[user] = "Luca"
+
+# Check logged in Status
+if "user" in session:
+  ...
+else:
+  ...
+
+# Logout page
+@app.route("/logout")
+def logout():
+  session.pop("user", None)]
+  return redirect(url_for("login"))
+```
+
 ## To-Do
 
-- [ ] Passwort hashen auf Client-Seite
+- [ ] Index: if logged in -> Home
+- [ ] Login/Register: If logged in -> Home
+- [ ] Home: if NOT logged in -> Index
+- [ ] Addfood: if NOT logged in -> Index
+- [ ] Dont show login/register Button on any Page, if logged in
 
 ## Roadmap
 
 - [x] User anlegen per form
 - [x] Login per form
-- [x] Logged in status beibehalten
-- [ ] Einzelne Seiten erkennen logged_in == true / false und reagieren
+- [ ] Logged in status in Session speichern
 - [ ] Food anlegen per form
