@@ -1,12 +1,15 @@
 from nutrition import app
-from flask import render_template, request
+from flask import render_template, request, session, redirect, url_for
 import mysql.connector
+
+dbport = "51758"
+app.secret_key = "d8Zu^8^g@CNmZ4WkeMAd"
 
 def DB_select_all_users():
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="62885",
+    port=dbport,
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
@@ -27,7 +30,7 @@ def DB_select_all_foods():
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="62885",
+    port=dbport,
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
@@ -48,7 +51,7 @@ def DB_add_new_user(new):
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="62885",
+    port=dbport,
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
@@ -67,14 +70,14 @@ def DB_add_new_food(new):
     # Connection aufbauen
     mydb = mysql.connector.connect(
     host="localhost",
-    port="62885",
+    port=dbport,
     user="nutritionist",
     password="lowcarb",
     database="nutrition_facts_db"
     )
     # Cursor erstellen
     cursor = mydb.cursor()
-    # Post new User
+    # Post new Food
     cursor.execute(f"INSERT INTO foods (name, addedby, cals, carbs, fats, protein) VALUES ('{new['name']}', '{new['addedby']}', '{new['cals']}', '{new['carbs']}', '{new['fats']}', '{new['protein']}');")
     # Commit
     mydb.commit()
@@ -89,35 +92,50 @@ foodsDB = DB_select_all_foods()
 # Webpages
 @app.route("/")
 def page_index():
-    return render_template(template_name_or_list="index.html")
+    if "user" in session:
+        return redirect(url_for("page_home"))
+    else:
+        return render_template(template_name_or_list="index.html")
 
 @app.route("/home")
 def page_home():
-    username = "Luca"
-    items = DB_select_all_foods()
-    print(f"[DEBUG] foodsDB = {foodsDB}")
-    return render_template(template_name_or_list="home.html", items=items, username=username)
+    if "user" not in session:
+        return redirect(url_for("page_index"))
+    else:
+        username = session["user"]
+        items = DB_select_all_foods()
+        print(f"[DEBUG] foodsDB = {foodsDB}")
+        return render_template(template_name_or_list="home.html", items=items, username=username)
 
 @app.route('/login')
 def login_pages():
-    return render_template(template_name_or_list="login.html")
+    if "user" in session:
+        return redirect(url_for("page_home"))
+    else:
+        return render_template(template_name_or_list="login.html")
 
 @app.route("/register")
 def page_register():
-    return render_template(template_name_or_list="register.html")
+    if "user" in session:
+        return redirect(url_for("page_home"))
+    else:
+        return render_template(template_name_or_list="register.html")
 
 @app.route("/addfood")
 def page_addfood():
-    return render_template(template_name_or_list="addfood.html")
+    if "user" not in session:
+        return redirect(url_for("page_index"))
+    else:
+        return render_template(template_name_or_list="addfood.html")
 
 # Endpoints
 @app.route("/users/login", methods=["POST"])
 def login_users():
     new = request.get_json()
     for x in DB_select_all_users():
-        print(x)
         if new["name"] == x["name"] and new["password"] == x["password"]:
             print("Nutzername und Passwort korrekt, login genehmigt!")
+            session["user"] = new["name"]
             return 'OK', 201
     return 'Unauthorized', 401
 
@@ -131,6 +149,7 @@ def add_user():
 @app.route("/foods/add", methods=["POST"])
 def add_food():
     new = request.get_json()
+    new["addedby"] = session["user"]
     foodsDB.append(new)
     print(f"[DEBUG] /foods/add new = {new}")
     DB_add_new_food(dict(request.get_json()))
@@ -139,3 +158,8 @@ def add_food():
 @app.route("/foods/get", methods=["GET"])
 def get_foods():
     return DB_select_all_foods()
+
+@app.route("/logout")
+def logout():
+    session.pop("user", None)
+    return redirect(url_for("page_index"))
