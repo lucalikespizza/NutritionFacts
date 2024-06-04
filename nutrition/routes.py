@@ -2,8 +2,8 @@ from nutrition import app
 from flask import render_template, request, session, redirect, url_for
 import mysql.connector
 
-dbport = "51758"
-app.secret_key = "d8Zu^8^g@CNmZ4WkeMAd"
+dbport = "52687"
+app.secret_key = "passwort"
 
 def DB_select_all_users():
     # Connection aufbauen
@@ -129,9 +129,10 @@ def page_addfood():
         return render_template(template_name_or_list="addfood.html")
 
 # Endpoints
-@app.route("/users/login", methods=["POST"])
+@app.route("/users/login", methods=["POST", "GET"])
 def login_users():
     new = request.get_json()
+    print(new)
     for x in DB_select_all_users():
         if new["name"] == x["name"] and new["password"] == x["password"]:
             print("Nutzername und Passwort korrekt, login genehmigt!")

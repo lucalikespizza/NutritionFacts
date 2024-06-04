@@ -42,13 +42,13 @@
             <tbody>
               {% for item in items%}
               <tr>
-                  <td>{{item.id}}</td>
-                  <td>{{item.addedby}}</td>
-                  <td>{{item.name}}</td>
-                  <td>{{item.cals}}</td>
-                  <td>{{item.carbs}} g</td>
-                  <td>{{item.fats}} g</td>
-                  <td>{{item.protein}} g</td>
+                  <td>{{item.id | safe}}</td>
+                  <td>{{item.addedby | safe}}</td>
+                  <td>{{item.name | safe}}</td>
+                  <td>{{item.cals | safe}}</td>
+                  <td>{{item.carbs | safe}} g</td>
+                  <td>{{item.fats | safe}} g</td>
+                  <td>{{item.protein | safe}} g</td>
                   <!--<td><a href="https://en.wikipedia.org/wiki/{{item.name}}"><button type="button" class="btn btn-info">More Info</button></td></a>-->
               </tr>
               {% endfor %}
@@ -56,6 +56,10 @@
       </table>
       <a href="/addfood"><button type="button" class="btn btn-info">Add food</button></td>
     </div>
+    <script>
+      document.cookie = "testcookie=testwert";
+      console.log(document.cookie);
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   </body>
 </html>
