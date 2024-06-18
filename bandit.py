@@ -20,8 +20,20 @@ def log(string):
     if LOGGING == True:
         print('\033[93m' + str(string) + '\033[0m')
 
+<<<<<<< HEAD
 def alert(string):
     print('\033[91m' + str(string) + '\033[0m')
+=======
+password = "jakshqiuhiuqh"
+user = "admin"
+
+def login(user, pw):
+    print(f"User: {user} Password: {pw}")
+
+login(user, password)
+
+print(btns)
+>>>>>>> 2af802080e4a9de2c6318fcd9bbe595482eac692
 
 def scan_with_bandit(file_path):
     config = BanditConfig()
@@ -33,6 +45,7 @@ def scan_with_bandit(file_path):
         if str(result).startswith("Issue: 'Possible hardcoded password:"):
             alert(result)
 
+<<<<<<< HEAD
 def scan_with_trufflehog(filePath):
     rule = models.Pattern(
         id="bad-password-letmein",
@@ -121,3 +134,7 @@ password = "18r&§2n38)=/n23@mur"
 user = "admin"
 
 print(f"User {user} has password {password}")
+=======
+# Ende des Programms
+print("Done.")
+>>>>>>> 2af802080e4a9de2c6318fcd9bbe595482eac692
