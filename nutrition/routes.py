@@ -2,7 +2,7 @@ from nutrition import app
 from flask import render_template, request, session, redirect, url_for
 import mysql.connector
 
-dbport = "52687"
+dbport = "51119"
 app.secret_key = "passwort"
 
 def DB_select_all_users():
