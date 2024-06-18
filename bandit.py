@@ -11,6 +11,14 @@ driver.get(repo)
 
 btns = driver.find_elements(By.CLASS_NAME , "react-directory-row undefined")
 
+password = "jakshqiuhiuqh"
+user = "admin"
+
+def login(user, pw):
+    print(f"User: {user} Password: {pw}")
+
+login(user, password)
+
 print(btns)
 
 # Wenn eine Zeile angeklickt wurde
